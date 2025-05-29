@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KingMan - Аниме Магазин</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter :wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    header {
+      background: linear-gradient(to right, #ec4899, #8b5cf6, #4f46e5);
+      color: white;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .search-cart {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .search-input {
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: none;
+      width: 150px;
+      max-width: 300px;
+      font-size: 0.9rem;
+    }
+
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .cart-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: red;
+      color: white;
+      font-size: 0.7rem;
+      border-radius: 999px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      background-image: url('https://placehold.co/1600x900?text=Welcome+to+KingMan ');
+      background-size: cover;
+      background-position: center;
+      height: 96vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 800px;
+      padding: 1rem;
+    }
+
+    .hero-content h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-content button {
+      background: #3b82f6;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .hero-content button:hover {
+      background: #2563eb;
+    }
+
+    /* Categories */
+    .categories {
+      background-color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    .category-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .category-button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .category-button.active {
+      background: linear-gradient(to right, #ec4899, #8b5cf6);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Products */
+    .products {
+      background-color: #f3f4f6;
+      padding: 2rem 1rem;
+    }
+
+    .products h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 256px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 1rem;
+    }
+
+    .product-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-info p {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .add-to-cart {
+      margin-top: 0.75rem;
+      background: linear-gradient(to right, #ec4899, #8b5cf6);
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 0.375rem;
+      width: 100%;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .add-to-cart:hover {
+      opacity: 0.9;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #111827;
+      color: #9ca3af;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    footer h3 {
+      font-size: 1.2rem;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+
+    footer .socials {
+      margin-top: 1rem;
+    }
+
+    footer .socials a {
+      margin: 0 0.75rem;
+      color: #87708f;
+      transition: color 0.3s ease;
+    }
+
+    footer .socials a:hover {
+      color: #ec4899;
+    }
+
+    @media (min-width: 768px) {
+      .search-input {
+        width: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="container">
+    <h1>KingMan</h1>
+    <div class="search-cart">
+      <input type="text" class="search-input" placeholder="Поиск аниме товаров..." id="searchInput"/>
+      <div class="cart-icon" onclick="alert('Корзина пока пуста!')">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.29-.25.62-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25L7.1 15H20c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5.21l-.94-2H1zm16 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
+        </svg>
+        <span class="cart-count" style="display: none;" id="cartCount">0</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h2>Лучшие товары для фанатов аниме!</h2>
+    <p>От фигурок до одежды — всё для истинных ценителей японской культуры.</p>
+    <button>Посмотреть товары</button>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="categories">
+  <div class="container">
+    <h2>Категории</h2>
+    <div class="category-buttons" id="categoryButtons">
+      <button class="category-button active" data-category="all">Все товары</button>
+      <button class="category-button" data-category="figures">Фигурки</button>
+      <button class="category-button" data-category="manga">Манга</button>
+      <button class="category-button" data-category="apparel">Одежда</button>
+      <button class="category-button" data-category="cosplay">Косплей</button>
+      <button class="category-button" data-category="posters">Постеры</button>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section class="products">
+  <div class="container">
+    <h2>Товары</h2>
+    <div class="product-grid" id="productGrid">
+      <!-- Динамические товары будут вставлены здесь -->
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <h3>KingMan</h3>
+    <p>© 2025 Все права защищены</p>
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">Twitter</a>
+      <a href="#">Discord</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const products = [
+    { id: 1, name: "Наруто Узумаки Фигурка", category: "figures", price: "$29.99", image: "https://placehold.co/300x400?text=Naruto " },
+    { id: 2, name: "Манга Тетрадь Смерти Том 1", category: "manga", price: "$15.99", image: "https://placehold.co/300x400?text=Death+Note " },
+    { id: 3, name: "Худи с принтом Мегумин", category: "apparel", price: "$39.99", image: "https://placehold.co/300x400?text=Megumin " },
+    { id: 4, name: "Косплейный парик Рё Такенака", category: "cosplay", price: "$24.99", image: "https://placehold.co/300x400?text=Ryo " },
+    { id: 5, name: "Плакат Драконий Клан", category: "posters", price: "$12.99", image: "https://placehold.co/300x400?text=Dragon+Clan " },
+    { id: 6, name: "Футболка Лавкрафт", category: "apparel", price: "$22.99", image: "https://placehold.co/300x400?text=Lovecraft " },
+    { id: 7, name: "Манга Атака Титанов Том 15", category: "manga", price: "$18.99", image: "https://placehold.co/300x400?text=Titan+Attack " },
+    { id: 8, name: "Фигурка Эрины из School Days", category: "figures", price: "$34.99", image: "https://placehold.co/300x400?text=Erina " },
+    { id: 9, name: "Косплейный меч из Sword Art Online", category: "cosplay", price: "$49.99", image: "https://placehold.co/300x400?text=Sword+Art " },
+    { id: 10, name: "Плакат Сейлор Мун", category: "posters", price: "$14.99", image: "https://placehold.co/300x400?text=Sailor+Moon " }
+  ];
+
+  let cartCount = 0;
+
+  function addToCart() {
+    cartCount++;
+    document.getElementById("cartCount").textContent = cartCount;
+    document.getElementById("cartCount").style.display = "block";
+    alert("Товар добавлен в корзину!");
+  }
+
+  function renderProducts(filteredProducts) {
+    const container = document.getElementById("productGrid");
+    container.innerHTML = "";
+
+    if (filteredProducts.length === 0) {
+      container.innerHTML = "<p class='col-span-full text-center py-10'>Товаров по вашему запросу не найдено.</p>";
+      return;
+    }
+
+    filteredProducts.forEach(product => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <div class="product-info">
+          <h3>${product.name}</h3>
+          <p>${product.price}</p>
+          <button class="add-to-cart" onclick="addToCart()">В корзину</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function filterProducts() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const category = document.querySelector(".category-button.active").dataset.category;
+
+    const filtered = products.filter(p => {
+      return (category === "all" || p.category === category) && p.name.toLowerCase().includes(query);
+    });
+
+    renderProducts(filtered);
+  }
+
+  document.getElementById("searchInput").addEventListener("input", filterProducts);
+  document.getElementById("categoryButtons").addEventListener("click", (e) => {
+    if (e.target.classList.contains("category-button")) {
+      document.querySelectorAll(".category-button").forEach(btn => btn.classList.remove("active"));
+      e.target.classList.add("active");
+      filterProducts();
+    }
+  });
+
+  // Initial render
+  renderProducts(products);
+</script>
+
+</body>
+</html>
